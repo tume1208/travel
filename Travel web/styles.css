@@ -1,0 +1,515 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #fff;
+    position: relative;
+}
+
+.logo {
+    font-family: 'Billabong', cursive;
+    font-size: 36px; /* Adjust the size as needed */
+    color: black; /* You can change the color if you like */
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    right: 20px;
+}
+
+.search-icon {
+    position: relative;
+    color: black;
+}
+
+.search-icon .material-icons {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.search-bar {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 30px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.message-icon svg path {
+    fill: black; /* Luxurious emerald green color */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.bottom-nav ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.bottom-nav ul li a {
+    color: black;
+    font-size: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-bar {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .bottom-nav ul {
+        flex-direction: row;
+    }
+}
+
+.profile-picture {
+    width: 36px; /* Adjust the size as needed */
+    height: 36px; /* Adjust the size as needed */
+    border-radius: 50%; /* This makes the image a circle */
+    object-fit: cover; /* Ensures the image covers the entire area */
+    border: 2px solid #fff; /* Optional: Add a border around the image */
+}
+
+.stories {
+    display: flex;
+    overflow-x: scroll;
+    padding: 10px;
+    background-color: #fff;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+.stories::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+.story {
+    flex: 0 0 auto;
+    margin-right: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.story-lines {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    max-width: 134px;
+}
+
+.story-line {
+    width: 10px;
+    height: 2px;
+    background-color: #ccc;
+    margin: 0 2px;
+    border-radius: 2px;
+}
+
+.story-line.active {
+    background-color: #cb33f5;
+}
+
+.story-location {
+    position: absolute;
+    top: -12px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    color: #000000;
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.story-media {
+    width: 130px;
+    height: 130px;
+    border-radius: 15px;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+.story-title {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background-color: #fff; /* Background color to fill the screen */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+    border: none; /* Remove border */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.story-image-modal,
+.story-video-modal {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image/video covers the entire area */
+    background-color: #fff; /* Add a background color */
+}
+
+.story-location-modal,
+.story-title-modal {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #000; /* Change text color to black for better contrast */
+    background-color: rgba(255, 255, 255, 0.5); /* Transparent white background */
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.profile-picture-modal {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    margin-right: 10px;
+}
+
+.close,
+.options {
+    position: absolute;
+    top: 10px;
+    color: #000; /* Change icon color to black for better contrast */
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close {
+    right: 50px;
+}
+
+.options {
+    right: 10px;
+    font-size: 24px;
+}
+
+.options-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.options-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+}
+
+.options-menu a:hover {
+    background-color: #f4f4f4;
+}
+
+.options-menu .report {
+    color: red;
+}
+
+.comment-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.5); /* Transparent white background */
+    border-radius: 10px; /* Border radius */
+    position: fixed; /* Fixed position at the bottom */
+    bottom: 10px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%; /* Adjust width as needed */
+    color: #000; /* Black text color */
+}
+
+.comment-bar input {
+    flex: 1;
+    padding: 5px;
+    border: none;
+    outline: none;
+    background: transparent; /* Transparent input background */
+    color: #000; /* Black text color */
+}
+
+.comment-bar .material-icons {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #000; /* Black icon color */
+}
+.options-menu {
+    display: none;
+}
+
+.options-menu.show {
+    display: block;
+}
+.progress-bar {
+    position: fixed;
+    top: 10px; /* Adjust the top position as needed */
+    left: 10px; /* Add padding from the left */
+    right: 10px; /* Add padding from the right */
+    height: 5px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1000;
+    border-radius: 10px; /* Add border radius */
+    overflow: hidden; /* Ensure the border radius is applied */
+    background-color: rgba(0, 0, 0, 0.1); /* Add a background color for better visibility */
+}
+
+.progress-segment {
+    flex: 1;
+    height: 100%;
+    background-color: #ccc;
+    margin: 0 2px; /* Add margin between segments */
+    position: relative;
+    border-radius: 10px; /* Add border radius */
+}
+
+.progress-segment.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #86dee4;
+    animation: load 5s linear forwards;
+    border-radius: 10px; /* Add border radius */
+}
+
+@keyframes load {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+#postSection {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.post {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.post-media {
+    width: 100%;
+    position: relative;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+}
+
+.post-image, .post-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image/video covers the container */
+}
+
+.post-caption {
+    padding: 10px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.post-actions .material-icons {
+    cursor: pointer;
+}
+
+.post-details {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.full-screen-video {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-screen-header {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 20px);
+    color: #fff;
+}
+
+.back-arrow {
+    cursor: pointer;
+}
+
+.song-playing {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+}
+
+.video-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-screen-video-element {
+    width: 100%;
+    height: auto;
+    max-height: 80%;
+    outline: none; /* Remove default focus outline */
+}
+
+.full-screen-actions {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+}
+
+.full-screen-actions .material-icons {
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .full-screen-video-element {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+    }
+
+    .full-screen-actions {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .full-screen-header {
+        top: 20px;
+        left: 20px;
+        width: calc(100% - 40px);
+    }
+}

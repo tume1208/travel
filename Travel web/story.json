@@ -1,0 +1,86 @@
+[
+    {
+        "username": "tume",
+        "profilePicture": "profile/basketball.jpeg",
+        "stories": [
+            {
+                "id": 1,
+                "location": "UB",
+                "image": "image/ub.jpg",
+                "timestamp": "2025-01-27T20:00:00Z"
+            },
+            {
+                "id": 7,
+                "location": "UB",
+                "image": "image/khuvsgul.jpg",
+                "timestamp": "2025-01-27T20:00:00Z"
+            },
+            {
+                "id": 8,
+                "location": "UB",
+                "image": "image/khuvsgul1.jpg",
+                "timestamp": "2025-01-27T20:00:00Z"
+            }
+        ]
+    },
+    {
+        "username": "saraa",
+        "profilePicture": "profile/golf.jpg",
+        "stories": [
+            {
+                "id": 2,
+                "location": "Khuvsgul",
+                "image": "image/R.jpg",
+                "timestamp": "2025-01-27T21:00:00Z"
+            }
+        ]
+    },
+    {
+        "username": "bold",
+        "profilePicture": "profile/kids-sport.jpg",
+        "stories": [
+            {
+                "id": 3,
+                "location": "Gobi",
+                "image": "image/et.jpg",
+                "timestamp": "2025-01-27T22:00:00Z"
+            }
+        ]
+    },
+    {
+        "username": "enkhee",
+        "profilePicture": "profile/swim.jpg",
+        "stories": [
+            {
+                "id": 4,
+                "location": "Terelj",
+                "image": "image/darkhan.jpg",
+                "timestamp": "2025-01-27T23:00:00Z"
+            }
+        ]
+    },
+    {
+        "username": "bataa",
+        "profilePicture": "profile/user.jpg",
+        "stories": [
+            {
+                "id": 5,
+                "location": "UB",
+                "image": "videos/ub.mp4",
+                "timestamp": "2025-01-28T00:00:00Z"
+            }
+        ]
+    },
+    {
+        "username": "bat",
+        "profilePicture": "profile/user.jpg",
+        "stories": [
+            {
+                "id": 6,
+                "location": "UB",
+                "image": "image/test.jpg",
+                "timestamp": "2025-01-28T01:00:00Z"
+            }
+        ]
+    }
+]
