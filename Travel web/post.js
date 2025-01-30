@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         fullScreenVideoElement.src = post.image_url;
                         fullScreenVideoElement.controls = false; // Remove unnecessary controls
                         fullScreenVideoElement.autoplay = true; // Ensure autoplay
+                        fullScreenVideoElement.muted = true; // Mute the video
+                        fullScreenVideoElement.loop = true; // Loop the video
+                        fullScreenVideoElement.playsinline = true; // Ensure inline playback
                         fullScreenVideoElement.load(); // Load the video
                         fullScreenVideoElement.addEventListener('loadedmetadata', () => {
                             fullScreenVideoElement.play(); // Autoplay the video
