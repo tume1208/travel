@@ -59,11 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Add click event to enlarge video
                 if (post.image_url.endsWith('.mp4')) {
                     const videoElement = postElement.querySelector('.post-video');
-                    videoElement.addEventListener('click', () => {
+                    videoElement.addEventListener('click', (event) => {
+                        event.preventDefault(); // Prevent default controls
                         currentVideoIndex = index;
                         fullScreenVideoElement.src = post.image_url;
                         fullScreenVideoElement.controls = false; // Remove unnecessary controls
-                        fullScreenVideoElement.play(); // Autoplay the video
+                        fullScreenVideoElement.autoplay = true; // Ensure autoplay
+                        fullScreenVideoElement.load(); // Load the video
+                        fullScreenVideoElement.addEventListener('loadedmetadata', () => {
+                            fullScreenVideoElement.play(); // Autoplay the video
+                        });
                         fullScreenVideo.style.display = 'flex';
                     });
                 }
@@ -91,7 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const nextVideo = data[currentVideoIndex];
                 if (nextVideo.image_url.endsWith('.mp4')) {
                     fullScreenVideoElement.src = nextVideo.image_url;
-                    fullScreenVideoElement.play();
+                    fullScreenVideoElement.load(); // Load the video
+                    fullScreenVideoElement.addEventListener('loadedmetadata', () => {
+                        fullScreenVideoElement.play(); // Autoplay the video
+                    });
                 }
             });
 
@@ -131,7 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const nextVideo = data[currentVideoIndex];
                     if (nextVideo.image_url.endsWith('.mp4')) {
                         fullScreenVideoElement.src = nextVideo.image_url;
-                        fullScreenVideoElement.play();
+                        fullScreenVideoElement.load(); // Load the video
+                        fullScreenVideoElement.addEventListener('loadedmetadata', () => {
+                            fullScreenVideoElement.play(); // Autoplay the video
+                        });
                     }
                 }
 
