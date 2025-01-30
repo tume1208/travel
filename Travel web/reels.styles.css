@@ -1,0 +1,131 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+}
+
+.full-screen-video {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+.full-screen-video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #000;
+}
+
+.back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 54px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 10;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.back-arrow:hover {
+    color: #ccc;
+}
+
+/* Add some transition effects */
+.full-screen-video-element {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.full-screen-video-element.fade-out {
+    opacity: 0;
+}
+
+.full-screen-video-element.fade-in {
+    opacity: 1;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 10;
+}
+
+.bottom-nav ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.bottom-nav ul li a {
+    color: black;
+    font-size: 24px;
+}
+
+.bottom-nav ul {
+    flex-direction: row;
+}
+
+.profile-picture {
+    width: 36px; /* Adjust the size as needed */
+    height: 36px; /* Adjust the size as needed */
+    border-radius: 50%; /* This makes the image a circle */
+    object-fit: cover; /* Ensures the image covers the entire area */
+    border: 2px solid #fff; /* Optional: Add a border around the image */
+}
+
+.reel-info {
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.reel-actions {
+    display: flex;
+    align-items: center;
+}
+
+.reel-actions .material-icons {
+    font-size: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.heart {
+    display: flex;
+    align-items: center;
+}
+
+.heart .material-icons {
+    margin-right: 5px;
+}
+
+.like-count {
+    font-size: 16px;
+}
