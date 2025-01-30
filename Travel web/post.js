@@ -19,17 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
 
-                const postMedia = post.image_url.endsWith('.mp4') ? `
+                const postMedia = post.post_video ? `
                     <div class="post-media">
-                        <video class="post-video" controls loading="lazy">
-                            <source src="${post.image_url}" type="video/mp4">
+                        <video class="post-video" autoplay muted loop playsinline>
+                            <source src="${post.post_video}" type="video/mp4">
                         </video>
                     </div>
-                ` : `
+                ` : post.image_url ? `
                     <div class="post-media">
                         <img src="${post.image_url}" alt="Post Image" class="post-image" loading="lazy">
                     </div>
-                `;
+                ` : '';
 
                 const postCaption = `
                     <div class="post-caption">
@@ -57,12 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 postSection.appendChild(postElement);
 
                 // Add click event to enlarge video
-                if (post.image_url.endsWith('.mp4')) {
+                if (post.post_video) {
                     const videoElement = postElement.querySelector('.post-video');
                     videoElement.addEventListener('click', (event) => {
                         event.preventDefault(); // Prevent default controls
                         currentVideoIndex = index;
-                        fullScreenVideoElement.src = post.image_url;
+                        fullScreenVideoElement.src = post.post_video;
                         fullScreenVideoElement.controls = false; // Remove unnecessary controls
                         fullScreenVideoElement.autoplay = true; // Ensure autoplay
                         fullScreenVideoElement.muted = true; // Mute the video
@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
             fullScreenVideo.addEventListener('click', (event) => {
                 const modalWidth = fullScreenVideo.offsetWidth;
                 const clickX = event.clientX;
-
                 if (clickX > modalWidth / 2) {
                     // Slide to next video
                     currentVideoIndex = (currentVideoIndex + 1) % data.length;
@@ -95,10 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Slide to previous video
                     currentVideoIndex = (currentVideoIndex - 1 + data.length) % data.length;
                 }
-
                 const nextVideo = data[currentVideoIndex];
-                if (nextVideo.image_url.endsWith('.mp4')) {
-                    fullScreenVideoElement.src = nextVideo.image_url;
+                if (nextVideo.post_video) {
+                    fullScreenVideoElement.src = nextVideo.post_video;
                     fullScreenVideoElement.load(); // Load the video
                     fullScreenVideoElement.addEventListener('loadedmetadata', () => {
                         fullScreenVideoElement.play(); // Autoplay the video
@@ -123,10 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!xDown || !yDown) {
                     return;
                 }
-
                 const xUp = evt.touches[0].clientX;
                 const yUp = evt.touches[0].clientY;
-
                 const xDiff = xDown - xUp;
                 const yDiff = yDown - yUp;
 
@@ -138,17 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Slide to previous video
                         currentVideoIndex = (currentVideoIndex - 1 + data.length) % data.length;
                     }
-
                     const nextVideo = data[currentVideoIndex];
-                    if (nextVideo.image_url.endsWith('.mp4')) {
-                        fullScreenVideoElement.src = nextVideo.image_url;
+                    if (nextVideo.post_video) {
+                        fullScreenVideoElement.src = nextVideo.post_video;
                         fullScreenVideoElement.load(); // Load the video
                         fullScreenVideoElement.addEventListener('loadedmetadata', () => {
                             fullScreenVideoElement.play(); // Autoplay the video
                         });
                     }
                 }
-
                 xDown = null;
                 yDown = null;
             }
