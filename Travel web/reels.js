@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (post.post_video) {
                     fullScreenVideoElement.src = post.post_video;
                     fullScreenVideoElement.load();
-                    document.addEventListener('click', () => {
+                    document.addEventListener('click', (event) => {
+                        event.preventDefault(); // Prevent default controls
                         fullScreenVideoElement.play().catch(error => {
                             console.error('Error playing video:', error);
                         });
