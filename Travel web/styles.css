@@ -169,7 +169,7 @@ footer {
 .story-media {
     width: 130px;
     height: 130px;
-    border-radius: 15px;
+    border-radius: 45px;
     object-fit: cover;
     border: 2px solid #fff;
 }
@@ -379,6 +379,15 @@ footer {
     display: flex;
     align-items: center;
     padding: 10px;
+    position: relative;
+}
+
+.location {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+    margin-right: auto;
 }
 
 .profile-picture {
@@ -391,6 +400,8 @@ footer {
 .username {
     font-weight: bold;
 }
+
+
 
 .post-media {
     width: 100%;
@@ -407,14 +418,83 @@ footer {
     object-fit: cover; /* Ensures the image/video covers the container */
 }
 
+.carousel {
+    position: relative;
+}
+
+.carousel-item {
+    display: none;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    z-index: 1; /* Ensure arrows are in front */
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.dots {
+    text-align: center;
+    padding: 0px 0;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    z-index: 1; /* Ensure dots are in front */
+}
+
+.dot {
+    cursor: pointer;
+    height: 4px;
+    width: 20px;
+    margin: 0 2px;
+    background-color: #bbb;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active {
+    background-color: #717171;
+}
+
 .post-caption {
     padding: 10px;
 }
 
 .post-actions {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: 10px;
+}
+
+.post-actions .left-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.post-actions .right-icons {
+    display: flex;
 }
 
 .post-actions .material-icons {
@@ -428,4 +508,3 @@ footer {
     font-size: 0.9em;
     color: #777;
 }
-
