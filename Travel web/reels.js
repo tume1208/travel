@@ -14,30 +14,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function loadVideo(index) {
                 const post = data[index];
-                if (post.post_video) {
-                    fullScreenVideoElement.src = post.post_video;
-                    fullScreenVideoElement.load();
-                    fullScreenVideoElement.play().catch(error => {
-                        console.error('Error playing video:', error);
-                    });
-                    fullScreenVideoElement.addEventListener('click', (event) => {
-                        event.preventDefault(); // Prevent default controls
+                if (post.media && post.media.length > 0) {
+                    const videoSrc = post.media.find(media => media.endsWith('.mp4'));
+                    if (videoSrc) {
+                        fullScreenVideoElement.src = videoSrc;
+                        fullScreenVideoElement.load();
                         fullScreenVideoElement.play().catch(error => {
                             console.error('Error playing video:', error);
                         });
-                    }, { once: true });
-                    // Remove default controls
-                    fullScreenVideoElement.controls = false;
+                        fullScreenVideoElement.addEventListener('click', (event) => {
+                            event.preventDefault(); // Prevent default controls
+                            fullScreenVideoElement.play().catch(error => {
+                                console.error('Error playing video:', error);
+                            });
+                        }, { once: true });
+                        // Remove default controls
+                        fullScreenVideoElement.controls = false;
 
-                    // Update profile info and like count
-                    profilePicture.src = post.profilePicture;
-                    username.textContent = post.username;
-                    likeCount.textContent = post.likes;
-
-                    // Use Fullscreen API to control fullscreen behavior
-                    fullScreenVideoElement.requestFullscreen().catch(error => {
-                        console.error('Error entering fullscreen:', error);
-                    });
+                        // Update profile info and like count
+                        profilePicture.src = post.profilePicture;
+                        username.textContent = post.username;
+                        likeCount.textContent = post.likes;
+                    }
                 }
             }
 
