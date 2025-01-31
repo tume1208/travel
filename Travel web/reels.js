@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (post.post_video) {
                     fullScreenVideoElement.src = post.post_video;
                     fullScreenVideoElement.load();
+                    fullScreenVideoElement.play().catch(error => {
+                        console.error('Error playing video:', error);
+                    });
                     fullScreenVideoElement.addEventListener('click', (event) => {
                         event.preventDefault(); // Prevent default controls
                         fullScreenVideoElement.play().catch(error => {
@@ -30,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     profilePicture.src = post.profilePicture;
                     username.textContent = post.username;
                     likeCount.textContent = post.likes;
+
+                    // Use Fullscreen API to control fullscreen behavior
+                    fullScreenVideoElement.requestFullscreen().catch(error => {
+                        console.error('Error entering fullscreen:', error);
+                    });
                 }
             }
 
