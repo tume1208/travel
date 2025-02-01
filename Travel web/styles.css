@@ -1,3 +1,4 @@
+/* styles.css */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -12,7 +13,11 @@ header {
     padding: 10px 20px;
     background-color: #ffffff;
     color: #fff;
-    position: relative;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    transition: top 0.3s;
+    z-index: 1000; /* Ensure the header stays on top */
 }
 
 .logo {
@@ -21,12 +26,14 @@ header {
     color: black; /* You can change the color if you like */
 }
 
+
 .icons {
     display: flex;
     align-items: center;
     gap: 10px;
     position: absolute;
-    right: 20px;
+    right: 50px;
+    top: 2.2vh;
 }
 
 .search-icon {
@@ -43,77 +50,29 @@ header {
     display: none;
     position: absolute;
     top: 0;
-    right: 30px;
+    right: 20px;
     padding: 5px;
     font-size: 16px;
 }
 
+.search-icon:hover .search-bar {
+    display: block;
+}
+
 .message-icon svg path {
-    fill: black; /* Luxurious emerald green color */
+    fill: black;
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-}
-
-nav ul li {
-    display: inline;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #ffffff;
-    color: #fff;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
-
-.bottom-nav ul {
-    display: flex;
-    justify-content: space-around;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.bottom-nav ul li a {
-    color: black;
-    font-size: 24px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .search-bar {
-        width: 100%;
-        margin: 10px 0;
-    }
-
-    .bottom-nav ul {
-        flex-direction: row;
-    }
+.message-icon:hover svg path {
+    fill: #cb33f5;
 }
 
 .profile-picture {
-    width: 36px; /* Adjust the size as needed */
-    height: 36px; /* Adjust the size as needed */
-    border-radius: 50%; /* This makes the image a circle */
-    object-fit: cover; /* Ensures the image covers the entire area */
-    border: 2px solid #fff; /* Optional: Add a border around the image */
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
 }
 
 .stories {
@@ -121,12 +80,14 @@ footer {
     overflow-x: scroll;
     padding: 10px;
     background-color: #fff;
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin-top: 70px;
+    padding-top: 10px;
 }
 
 .stories::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
+    display: none;
 }
 
 .story {
@@ -157,7 +118,7 @@ footer {
 
 .story-location {
     position: absolute;
-    top: -12px; /* Adjust as needed */
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
     color: #000000;
@@ -174,13 +135,6 @@ footer {
     border: 2px solid #fff;
 }
 
-.story-title {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #333;
-}
-
-
 .modal {
     display: none;
     position: fixed;
@@ -194,10 +148,10 @@ footer {
 }
 
 .modal-content {
-    background-color: #fff; /* Background color to fill the screen */
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
-    border: none; /* Remove border */
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    border: none;
     width: 100%;
     height: 100%;
     display: flex;
@@ -210,17 +164,16 @@ footer {
 .story-video-modal {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensure the image/video covers the entire area */
-    background-color: #fff; /* Add a background color */
+    object-fit: cover;
+    background-color: #fff;
 }
 
-.story-location-modal,
-.story-title-modal {
+.story-location-modal {
     position: absolute;
     top: 10px;
     left: 10px;
-    color: #000; /* Change text color to black for better contrast */
-    background-color: rgba(255, 255, 255, 0.5); /* Transparent white background */
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 5px 10px;
     border-radius: 5px;
     display: flex;
@@ -240,7 +193,7 @@ footer {
 .options {
     position: absolute;
     top: 10px;
-    color: #000; /* Change icon color to black for better contrast */
+    color: #000;
     font-size: 28px;
     cursor: pointer;
 }
@@ -287,14 +240,14 @@ footer {
     justify-content: space-between;
     padding: 10px;
     border-top: 1px solid #ddd;
-    background-color: rgba(255, 255, 255, 0.5); /* Transparent white background */
-    border-radius: 10px; /* Border radius */
-    position: fixed; /* Fixed position at the bottom */
-    bottom: 10px; /* Adjust as needed */
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    position: fixed;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 90%; /* Adjust width as needed */
-    color: #000; /* Black text color */
+    width: 90%;
+    color: #000;
 }
 
 .comment-bar input {
@@ -302,43 +255,37 @@ footer {
     padding: 5px;
     border: none;
     outline: none;
-    background: transparent; /* Transparent input background */
-    color: #000; /* Black text color */
+    background: transparent;
+    color: #000;
 }
 
 .comment-bar .material-icons {
     cursor: pointer;
     margin-left: 10px;
-    color: #000; /* Black icon color */
-}
-.options-menu {
-    display: none;
+    color: #000;
 }
 
-.options-menu.show {
-    display: block;
-}
 .progress-bar {
     position: fixed;
-    top: 10px; /* Adjust the top position as needed */
-    left: 10px; /* Add padding from the left */
-    right: 10px; /* Add padding from the right */
+    top: 10px;
+    left: 10px;
+    right: 10px;
     height: 5px;
     display: flex;
     justify-content: space-between;
     z-index: 1000;
-    border-radius: 10px; /* Add border radius */
-    overflow: hidden; /* Ensure the border radius is applied */
-    background-color: rgba(0, 0, 0, 0.1); /* Add a background color for better visibility */
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .progress-segment {
     flex: 1;
     height: 100%;
     background-color: #ccc;
-    margin: 0 2px; /* Add margin between segments */
+    margin: 0 2px;
     position: relative;
-    border-radius: 10px; /* Add border radius */
+    border-radius: 10px;
 }
 
 .progress-segment.active::after {
@@ -350,7 +297,7 @@ footer {
     width: 100%;
     background-color: #86dee4;
     animation: load 5s linear forwards;
-    border-radius: 10px; /* Add border radius */
+    border-radius: 10px;
 }
 
 @keyframes load {
@@ -361,6 +308,7 @@ footer {
         width: 100%;
     }
 }
+
 #postSection {
     width: 100%;
     max-width: 600px;
@@ -401,8 +349,6 @@ footer {
     font-weight: bold;
 }
 
-
-
 .post-media {
     width: 100%;
     position: relative;
@@ -415,68 +361,53 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image/video covers the container */
+    object-fit: cover;
 }
 
 .carousel {
     position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
 }
 
 .carousel-item {
-    display: none;
+    display: block; /* Ensure items are displayed */
+    opacity: 0; /* Start with opacity 0 */
+    transition: opacity 0.5s ease-in-out; /* Smooth transition */
 }
 
 .carousel-item.active {
-    display: block;
+    opacity: 1; /* Show active item */
 }
 
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    margin-top: -22px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-    z-index: 1; /* Ensure arrows are in front */
-}
-
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
-}
 
 .dots {
     text-align: center;
-    padding: 0px 0;
+    padding: 10px 0;
     position: absolute;
-    bottom: 10px;
     width: 100%;
-    z-index: 1; /* Ensure dots are in front */
+    bottom: 10px;
 }
 
 .dot {
-    cursor: pointer;
-    height: 4px;
-    width: 20px;
-    margin: 0 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
     background-color: #bbb;
+    margin: 0 5px;
     display: inline-block;
-    transition: background-color 0.6s ease;
+    cursor: pointer;
 }
 
 .dot.active {
     background-color: #717171;
 }
+
 
 .post-caption {
     padding: 10px;
@@ -505,6 +436,6 @@ footer {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    font-size: 0.9em;
-    color: #777;
+    font-size: 0.9;
+    color:#777;
 }
