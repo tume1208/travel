@@ -15,20 +15,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="location">${post.location}</span>
                     </div>
                 `;
+                const images = document.querySelectorAll('.post-image');
+images.forEach(image => {
+    image.addEventListener('load', () => {
+        console.log('Image loaded:', image.src);
+    });
+});
+
 
                 const postMedia = post.media && post.media.length > 1 ? `
                     <div class="post-media carousel">
-                        ${post.media.map((media, i) => `
-                            <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                                ${media.endsWith('.mp4') ? `
-                                    <video class="post-video media-element" autoplay muted loop playsinline>
-                                        <source src="${media}" type="video/mp4">
-                                    </video>
-                                ` : `
-                                    <img src="${media}" alt="Post Image" class="post-image media-element" loading="lazy">
-                                `}
-                            </div>
-                        `).join('')}
+                        <div class="carousel-inner">
+                            ${post.media.map((media, i) => `
+                                <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                                    ${media.endsWith('.mp4') ? `
+                                        <video class="post-video media-element" autoplay muted loop playsinline>
+                                            <source src="${media}" type="video/mp4">
+                                        </video>
+                                    ` : `
+                                        <img src="${media}" alt="Post Image" class="post-image media-element" loading="lazy">
+                                    `}
+                                </div>
+                            `).join('')}
+                        </div>
                         <div class="dots">
                             ${post.media.map((_, i) => `
                                 <span class="dot ${i === 0 ? 'active' : ''}" onclick="currentSlide(${i}, ${index})"></span>
@@ -112,11 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     carousel.addEventListener('touchstart', (event) => {
                         startX = event.touches[0].clientX;
-                    });
+                    }, { passive: true });
 
                     carousel.addEventListener('touchmove', (event) => {
                         endX = event.touches[0].clientX;
-                    });
+                    }, { passive: true });
 
                     carousel.addEventListener('touchend', () => {
                         if (startX > endX + 50) {
@@ -133,21 +142,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function changeSlide(n, index) {
     const carousel = document.querySelectorAll('.carousel')[index];
-    if (!carousel) return; // Ensure carousel exists
+    if (!carousel) return;
     const items = carousel.querySelectorAll('.carousel-item');
     const dots = carousel.querySelectorAll('.dot');
     let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
 
     items[activeIndex].classList.remove('active');
     dots[activeIndex].classList.remove('active');
-    activeIndex = (activeIndex + n + items.length) % items.length;
-    items[activeIndex].classList.add('active');
-    dots[activeIndex].classList.add('active');
+
+    const newIndex = (activeIndex + n + items.length) % items.length;
+    items[newIndex].classList.add('active');
+    dots[newIndex].classList.add('active');
 }
 
 function currentSlide(n, index) {
     const carousel = document.querySelectorAll('.carousel')[index];
-    if (!carousel) return; // Ensure carousel exists
+    if (!carousel) return;
     const items = carousel.querySelectorAll('.carousel-item');
     const dots = carousel.querySelectorAll('.dot');
     let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
