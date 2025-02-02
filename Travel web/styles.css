@@ -1,4 +1,3 @@
-/* styles.css */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -18,6 +17,7 @@ header {
     top: 0;
     transition: top 0.3s;
     z-index: 1000; /* Ensure the header stays on top */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added box-shadow */
 }
 
 .logo {
@@ -25,7 +25,6 @@ header {
     font-size: 36px; /* Adjust the size as needed */
     color: black; /* You can change the color if you like */
 }
-
 
 .icons {
     display: flex;
@@ -47,16 +46,19 @@ header {
 }
 
 .search-bar {
-    display: none;
+    opacity: 0; /* Changed from display: none */
+    visibility: hidden; /* Added visibility */
     position: absolute;
     top: 0;
     right: 20px;
     padding: 5px;
     font-size: 16px;
+    transition: opacity 0.3s, visibility 0.3s; /* Added transition */
 }
 
 .search-icon:hover .search-bar {
-    display: block;
+    opacity: 1; /* Changed from display: block */
+    visibility: visible; /* Added visibility */
 }
 
 .message-icon svg path {
@@ -296,7 +298,7 @@ header {
     height: 100%;
     width: 100%;
     background-color: #86dee4;
-    animation: load 5s linear forwards;
+    animation: load 5s linear forwards 0.5s; /* Added delay */
     border-radius: 10px;
 }
 
@@ -309,137 +311,7 @@ header {
     }
 }
 
-#postSection {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.post {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    background-color: #fff;
-}
-
-.post-header {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    position: relative;
-}
-
-.location {
-    font-size: 1.5em;
-    font-weight: bold;
-    text-align: center;
-    flex-grow: 1;
-    margin-right: auto;
-}
-
-.profile-picture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.username {
-    font-weight: bold;
-}
-
-.post-media {
-    width: 100%;
-    position: relative;
-    padding-top: 100%; /* 1:1 Aspect Ratio */
-}
-
-.post-image, .post-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.carousel {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-}
-
-.carousel-inner {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel-item {
-    display: block; /* Ensure items are displayed */
-    opacity: 0; /* Start with opacity 0 */
-    transition: opacity 0.5s ease-in-out; /* Smooth transition */
-}
-
-.carousel-item.active {
-    opacity: 1; /* Show active item */
-}
-
-
-.dots {
-    text-align: center;
-    padding: 10px 0;
-    position: absolute;
-    width: 100%;
-    bottom: 10px;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #bbb;
-    margin: 0 5px;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.dot.active {
-    background-color: #717171;
-}
-
-
-.post-caption {
-    padding: 10px;
-}
-
-.post-actions {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-}
-
-.post-actions .left-icons {
-    display: flex;
-    gap: 10px;
-}
-
-.post-actions .right-icons {
-    display: flex;
-}
-
-.post-actions .material-icons {
-    cursor: pointer;
-}
-
-.post-details {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    font-size: 0.9;
-    color:#777;
-}
-/* Footer Navigation */
+/* Bottom Navigation */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -493,4 +365,89 @@ header {
 
 .bottom-nav a:hover .profile-picture {
     border-color: #cb33f5;
+}
+.post {
+    background-color: #fff;
+    border: 1px solid #fff;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.username {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.slider-container {
+    width: 100%;
+    max-width: 400px;
+    overflow: hidden;
+    border: 1px solid #dbdbdb;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slider img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: none;
+    aspect-ratio: 1 / 1;
+}
+
+.slider video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: none;
+}
+
+.post-icons {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.post-left-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.post-right-icon {
+    margin-left: auto;
+}
+
+.post-icon {
+    font-size: 24px; /* Adjust the size as needed */
+}
+
+.caption {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.caption.collapsed {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
