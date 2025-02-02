@@ -1,169 +1,143 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch('posts.json')
         .then(response => response.json())
-        .then(data => {
+        .then(posts => {
             const postSection = document.getElementById('postSection');
 
-            data.forEach((post, index) => {
+            posts.forEach(post => {
                 const postElement = document.createElement('div');
                 postElement.classList.add('post');
 
-                const postHeader = `
-                    <div class="post-header">
-                        <img src="${post.profilePicture}" alt="Profile Picture" class="profile-picture">
-                        <span class="username">${post.username}</span>
-                        <span class="location">${post.location}</span>
-                    </div>
-                `;
-                const images = document.querySelectorAll('.post-image');
-images.forEach(image => {
-    image.addEventListener('load', () => {
-        console.log('Image loaded:', image.src);
-    });
-});
+                const profilePicture = document.createElement('img');
+                profilePicture.src = post.profilePicture;
+                profilePicture.alt = `${post.username}'s profile picture`;
+                profilePicture.classList.add('profile-picture');
 
+                const username = document.createElement('span');
+                username.textContent = post.username;
+                username.classList.add('username');
 
-                const postMedia = post.media && post.media.length > 1 ? `
-                    <div class="post-media carousel">
-                        <div class="carousel-inner">
-                            ${post.media.map((media, i) => `
-                                <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                                    ${media.endsWith('.mp4') ? `
-                                        <video class="post-video media-element" autoplay muted loop playsinline>
-                                            <source src="${media}" type="video/mp4">
-                                        </video>
-                                    ` : `
-                                        <img src="${media}" alt="Post Image" class="post-image media-element" loading="lazy">
-                                    `}
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="dots">
-                            ${post.media.map((_, i) => `
-                                <span class="dot ${i === 0 ? 'active' : ''}" onclick="currentSlide(${i}, ${index})"></span>
-                            `).join('')}
-                        </div>
-                    </div>
-                ` : post.media && post.media.length === 1 ? `
-                    <div class="post-media">
-                        ${post.media[0].endsWith('.mp4') ? `
-                            <video class="post-video media-element" autoplay muted loop playsinline>
-                                <source src="${post.media[0]}" type="video/mp4">
-                            </video>
-                        ` : `
-                            <img src="${post.media[0]}" alt="Post Image" class="post-image media-element" loading="lazy">
-                        `}
-                    </div>
-                ` : '';
+                const header = document.createElement('div');
+                header.appendChild(profilePicture);
+                header.appendChild(username);
 
-                const postActions = `
-                    <div class="post-actions">
-                        <div class="left-icons">
-                            <span class="material-icons">favorite_border</span>
-                            <span class="material-icons">comment</span>
-                            <span class="material-icons">share</span>
-                        </div>
-                        <div class="right-icons">
-                            <span class="material-icons">bookmark_border</span>
-                        </div>
-                    </div>
-                `;
-
-                const postCaption = `
-                    <div class="post-caption">
-                        <p>${post.caption}</p>
-                    </div>
-                `;
-
-                // Calculate the time difference
-                const postDate = new Date(post.created_at);
-                const now = new Date();
-                const timeDiff = now - postDate;
-                let timeAgo;
-
-                if (timeDiff < 60 * 60 * 1000) { // Less than an hour
-                    const minutesAgo = Math.floor(timeDiff / (1000 * 60));
-                    timeAgo = `${minutesAgo} minutes ago`;
-                } else if (timeDiff < 24 * 60 * 60 * 1000) { // Less than a day
-                    const hoursAgo = Math.floor(timeDiff / (1000 * 60 * 60));
-                    timeAgo = `${hoursAgo} hours ago`;
-                } else { // More than a day
-                    const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                    timeAgo = `${daysAgo} days ago`;
+                const caption = document.createElement('p');
+                caption.textContent = post.caption;
+                caption.classList.add('caption');
+                if (post.caption.length > 250) {
+                    caption.classList.add('collapsed');
                 }
 
-                const postDetails = `
-                    <div class="post-details">
-                        <span class="created-at">${timeAgo}</span>
-                        <span class="agency">${post.agency}</span>
-                    </div>
-                `;
+                caption.addEventListener('click', () => {
+                    caption.classList.toggle('collapsed');
+                });
 
-                postElement.innerHTML = postHeader + postMedia + postCaption + postActions + postDetails;
+                const sliderContainer = document.createElement('div');
+                sliderContainer.classList.add('slider-container');
+
+                const slider = document.createElement('div');
+                slider.classList.add('slider');
+
+                post.media.forEach(media => {
+                    if (media.endsWith('.mp4')) {
+                        const video = document.createElement('video');
+                        video.src = media;
+                        video.controls = true;
+                        slider.appendChild(video);
+                    } else {
+                        const img = document.createElement('img');
+                        img.src = media;
+                        slider.appendChild(img);
+                    }
+                });
+
+                sliderContainer.appendChild(slider);
+
+                const icons = document.createElement('div');
+                icons.classList.add('post-icons');
+
+                const leftIcons = document.createElement('div');
+                leftIcons.classList.add('post-left-icons');
+
+                const heartIcon = document.createElement('i');
+                heartIcon.classList.add('fa-regular', 'fa-heart', 'post-icon');
+
+                const commentIcon = document.createElement('i');
+                commentIcon.classList.add('fa-regular', 'fa-comment', 'post-icon');
+
+                const shareIcon = document.createElement('i');
+                shareIcon.classList.add('fa-solid', 'fa-share', 'post-icon');
+
+                leftIcons.appendChild(heartIcon);
+                leftIcons.appendChild(commentIcon);
+                leftIcons.appendChild(shareIcon);
+
+                const saveIcon = document.createElement('i');
+                saveIcon.classList.add('fa-regular', 'fa-bookmark', 'post-icon');
+                saveIcon.classList.add('post-right-icon');
+
+                icons.appendChild(leftIcons);
+                icons.appendChild(saveIcon);
+
+                postElement.appendChild(header);
+                postElement.appendChild(sliderContainer);
+                postElement.appendChild(icons);
+                postElement.appendChild(caption);
+
                 postSection.appendChild(postElement);
 
-                // Add click event to redirect to reels.html for single video posts
-                if (post.media && post.media.length === 1 && post.media[0].endsWith('.mp4')) {
-                    const videoElement = postElement.querySelector('.post-video');
-                    videoElement.addEventListener('click', (event) => {
-                        event.preventDefault(); // Prevent default controls
-                        localStorage.setItem('autoPlay', 'true');
-                        localStorage.setItem('videoSrc', videoElement.querySelector('source').src);
-                        window.location.href = `reels.html?index=${index}`;
-                    });
+                // Add swipe functionality
+                let currentIndex = 0;
+                const totalImages = slider.children.length;
+                let startX, currentX, isDragging = false;
+
+                function goToNextImage() {
+                    if (currentIndex < totalImages - 1) {
+                        currentIndex++;
+                        updateSliderPosition();
+                    }
                 }
 
-                // Add swipe functionality for carousel
-                const carousel = postElement.querySelector('.carousel');
-                if (carousel) {
-                    let startX = 0;
-                    let endX = 0;
-
-                    carousel.addEventListener('touchstart', (event) => {
-                        startX = event.touches[0].clientX;
-                    }, { passive: true });
-
-                    carousel.addEventListener('touchmove', (event) => {
-                        endX = event.touches[0].clientX;
-                    }, { passive: true });
-
-                    carousel.addEventListener('touchend', () => {
-                        if (startX > endX + 50) {
-                            changeSlide(1, index); // Swipe left
-                        } else if (startX < endX - 50) {
-                            changeSlide(-1, index); // Swipe right
-                        }
-                    });
+                function goToPrevImage() {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateSliderPosition();
+                    }
                 }
+
+                function updateSliderPosition() {
+                    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+
+                sliderContainer.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].pageX;
+                    isDragging = true;
+                });
+
+                sliderContainer.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].pageX;
+                    const diffX = startX - currentX;
+                    if ((currentIndex === 0 && diffX < 0) || (currentIndex === totalImages - 1 && diffX > 0)) {
+                        return; // Prevent swiping beyond the first and last images
+                    }
+                    slider.style.transform = `translateX(calc(-${currentIndex * 100}% - ${diffX}px))`;
+                });
+
+                sliderContainer.addEventListener('touchend', (e) => {
+                    isDragging = false;
+                    const endX = e.changedTouches[0].pageX;
+                    const diffX = startX - endX;
+
+                    if (diffX > 50 && currentIndex < totalImages - 1) {
+                        goToNextImage();
+                    } else if (diffX < -50 && currentIndex > 0) {
+                        goToPrevImage();
+                    } else {
+                        updateSliderPosition();
+                    }
+                });
             });
         })
         .catch(error => console.error('Error fetching posts:', error));
 });
-
-function changeSlide(n, index) {
-    const carousel = document.querySelectorAll('.carousel')[index];
-    if (!carousel) return;
-    const items = carousel.querySelectorAll('.carousel-item');
-    const dots = carousel.querySelectorAll('.dot');
-    let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-
-    items[activeIndex].classList.remove('active');
-    dots[activeIndex].classList.remove('active');
-
-    const newIndex = (activeIndex + n + items.length) % items.length;
-    items[newIndex].classList.add('active');
-    dots[newIndex].classList.add('active');
-}
-
-function currentSlide(n, index) {
-    const carousel = document.querySelectorAll('.carousel')[index];
-    if (!carousel) return;
-    const items = carousel.querySelectorAll('.carousel-item');
-    const dots = carousel.querySelectorAll('.dot');
-    let activeIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
-
-    items[activeIndex].classList.remove('active');
-    dots[activeIndex].classList.remove('active');
-    items[n].classList.add('active');
-    dots[n].classList.add('active');
-}
