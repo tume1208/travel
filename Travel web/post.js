@@ -43,15 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         const video = document.createElement('video');
                         video.src = media;
                         video.controls = true;
-                        video.autoplay = true; // Add this line
-                        video.muted = true; // Add this line
+                        video.autoplay = true;
+                        video.muted = true; // Ensure muted to enforce autoplay on all devices
+                        
+                        // Unmute when the video is clicked
                         video.addEventListener('click', () => {
                             if (video.paused) {
                                 video.play();
                             } else {
                                 video.pause();
                             }
+                            video.muted = !video.muted;
                         });
+                        
                         video.addEventListener('error', () => console.error('Failed to load video:', media));
                         slider.appendChild(video);
                     } else {
@@ -61,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         slider.appendChild(img);
                     }
                 });
+                
                 
                 sliderContainer.appendChild(slider);
 
