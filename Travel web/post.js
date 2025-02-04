@@ -42,9 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (media.endsWith('.mp4')) {
                         const video = document.createElement('video');
                         video.src = media;
-                        video.controls = true;
                         video.autoplay = true;
-                        video.muted = true; // Ensure muted to enforce autoplay on all devices
+                        video.muted = true; // Ensure autoplay works on all devices
+                        
+                        // Remove default controls
+                        video.controls = false;
                         
                         // Unmute when the video is clicked
                         video.addEventListener('click', () => {
@@ -65,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         slider.appendChild(img);
                     }
                 });
+                
                 
                 
                 sliderContainer.appendChild(slider);
