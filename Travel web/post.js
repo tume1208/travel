@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         const video = document.createElement('video');
                         video.src = media;
                         video.autoplay = true;
-                        video.muted = true; // Ensure autoplay works on all devices
+                        video.muted = true;
                         
-                        // Remove default controls
+                        // Hide default controls
                         video.controls = false;
                         
                         // Unmute when the video is clicked
