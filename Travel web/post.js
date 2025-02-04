@@ -43,14 +43,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         const video = document.createElement('video');
                         video.src = media;
                         video.controls = true;
+                        video.autoplay = true; // Add this line
+                        video.muted = true; // Add this line
+                        video.addEventListener('click', () => {
+                            if (video.paused) {
+                                video.play();
+                            } else {
+                                video.pause();
+                            }
+                        });
+                        video.addEventListener('error', () => console.error('Failed to load video:', media));
                         slider.appendChild(video);
                     } else {
                         const img = document.createElement('img');
                         img.src = media;
+                        img.addEventListener('error', () => console.error('Failed to load image:', media));
                         slider.appendChild(img);
                     }
                 });
-
+                
                 sliderContainer.appendChild(slider);
 
                 const icons = document.createElement('div');
