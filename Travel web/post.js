@@ -44,10 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         video.src = media;
                         video.autoplay = true;
                         video.muted = true;
+                
+                        // Apply class to main video posts
+                        video.classList.add('post-video');
                         
-                        // Hide default controls
+                        // Remove default controls
                         video.controls = false;
-                        
+                
                         // Unmute when the video is clicked
                         video.addEventListener('click', () => {
                             if (video.paused) {
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                             video.muted = !video.muted;
                         });
-                        
+                
                         video.addEventListener('error', () => console.error('Failed to load video:', media));
                         slider.appendChild(video);
                     } else {
