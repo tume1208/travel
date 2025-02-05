@@ -1,0 +1,44 @@
+[
+  {
+    "post_id": 1,
+    "likes_count": 12,
+    "comments_count": 3,
+    "shares_count": 0,
+    "bookmarks_count": 0
+  },
+  {
+    "post_id": 2,
+    "likes_count": 0,
+    "comments_count": 0,
+    "shares_count": 0,
+    "bookmarks_count": 0
+  },
+  {
+    "post_id": 3,
+    "likes_count": 0,
+    "comments_count": 0,
+    "shares_count": 0,
+    "bookmarks_count": 0
+  },
+  {
+    "post_id": 4,
+    "likes_count": 0,
+    "comments_count": 0,
+    "shares_count": 0,
+    "bookmarks_count": 0
+  },
+  {
+    "post_id": 5,
+    "likes_count": 0,
+    "comments_count": 0,
+    "shares_count": 0,
+    "bookmarks_count": 0
+  },
+  {
+    "post_id": 6,
+    "likes_count": 0,
+    "comments_count": 0,
+    "shares_count": 0,
+    "bookmarks_count": 0
+  }
+]
