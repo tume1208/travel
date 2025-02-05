@@ -321,6 +321,7 @@ header {
     z-index: 1000;
 }
 
+
 .bottom-nav ul {
     display: flex;
     justify-content: space-around;
@@ -458,7 +459,6 @@ header {
     object-fit: cover;
     display: block;
     max-width: 100%;
-    position: relative; /* Ensure video stays within container */
 }
 
 .post video::-webkit-media-controls {
@@ -467,4 +467,13 @@ header {
 
 .post video::-webkit-media-controls-enclosure {
     display: none !important;
+}
+.interaction-count {
+    font-size: 14px;
+    margin-left: 5px;
+    color: #8e8e8e;
+}
+
+.post-icon {
+    cursor: pointer;
 }
