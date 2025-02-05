@@ -6,19 +6,19 @@
             {
                 "id": 1,
                 "location": "UB",
-                "image": "image/ub.jpg",
+                "image": "videos/1.mp4",
                 "timestamp": "2025-01-27T20:00:00Z"
             },
             {
                 "id": 7,
                 "location": "UB",
-                "image": "image/khuvsgul.jpg",
+                "image": "videos/2.mp4",
                 "timestamp": "2025-01-27T20:00:00Z"
             },
             {
                 "id": 8,
                 "location": "UB",
-                "image": "image/khuvsgul1.jpg",
+                "image": "videos/3.mp4",
                 "timestamp": "2025-01-27T20:00:00Z"
             }
         ]
@@ -30,7 +30,7 @@
             {
                 "id": 2,
                 "location": "Khuvsgul",
-                "image": "image/R.jpg",
+                "image": "videos/4.mp4",
                 "timestamp": "2025-01-27T21:00:00Z"
             }
         ]
@@ -42,7 +42,7 @@
             {
                 "id": 3,
                 "location": "Gobi",
-                "image": "image/et.jpg",
+                "image": "videos/5.mp4",
                 "timestamp": "2025-01-27T22:00:00Z"
             }
         ]
