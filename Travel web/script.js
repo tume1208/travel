@@ -119,26 +119,33 @@ document.addEventListener('DOMContentLoaded', () => {
                             <source src="${story.image}" type="video/mp4">
                         </video>
                     `;
+
+                    // Add event listener for the video to start playing
+                    const storyVideo = storyElement.querySelector('.story-media');
+                    storyVideo.addEventListener('playing', () => {
+                        clearTimeout(storyTimer);
+                        showStory(userIndex, 0);
+                    });
                 } else {
                     storyElement.innerHTML += `
                         <div class="story-location">${story.location}</div>
                         <img src="${story.image}" alt="${user.username}'s story" class="story-media" loading="lazy">
                     `;
                 }
+
+                // Add event listener for clicking on the story
                 storyElement.addEventListener('click', () => {
-                    currentUserIndex = userIndex;
-                    currentStoryIndex = 0;
-                    storyModal.style.display = 'block';
+                    storyModal.style.display = 'flex';
                     header.style.display = 'none'; // Hide the header
                     disableScroll(); // Disable scrolling
-                    showStory(currentUserIndex, currentStoryIndex);
+                    showStory(userIndex, 0);
                 });
+
                 storiesContainer.appendChild(storyElement);
             });
+        });
+});
 
-            console.log(bottomNav.style.display); // Log the display status of bottomNav
-
-            console.log('bottomNav:', getComputedStyle(bottomNav).display, getComputedStyle(bottomNav).visibility, bottomNav.offsetWidth, bottomNav.offsetHeight);
 // Event listener for the close modal button
 closeModal.addEventListener('click', () => {
     storyModal.style.display = 'none';
@@ -165,49 +172,35 @@ window.addEventListener('click', (event) => {
     }
 });
 
-            // Add event listeners for clicking on the left and right sides of the modal
-            storyModal.addEventListener('click', (event) => {
-                const modalWidth = storyModal.offsetWidth;
-                const clickX = event.clientX;
+// Event listener for clicking on the left and right sides of the modal
+storyModal.addEventListener('click', (event) => {
+    const modalWidth = storyModal.offsetWidth;
+    const clickX = event.clientX;
 
-                // Check if the click target is not the heart icon, profile picture, options menu, or comment bar
-                if (event.target.closest('.material-icons.favorite-border') || event.target.closest('.profile-picture-modal') || event.target.closest('.options') || event.target.closest('.comment-bar')) {
-                    return; // Do nothing if the click is on these elements
-                }
+    // Check if the click target is not the heart icon, profile picture, options menu, or comment bar
+    if (event.target.closest('.material-icons.favorite-border') || event.target.closest('.profile-picture-modal') || event.target.closest('.options') || event.target.closest('.comment-bar')) {
+        return; // Do nothing if the click is on these elements
+    }
 
-                if (clickX > modalWidth / 2) {
-                    // Click on the right side
-                    currentStoryIndex = (currentStoryIndex + 1) % data[currentUserIndex].stories.length;
-                    if (currentStoryIndex === 0) {
-                        currentUserIndex = (currentUserIndex + 1) % data.length;
-                    }
-                } else {
-                    // Click on the left side
-                    currentStoryIndex = (currentStoryIndex - 1 + data[currentUserIndex].stories.length) % data[currentUserIndex].stories.length;
-                    if (currentStoryIndex === data[currentUserIndex].stories.length - 1) {
-                        currentUserIndex = (currentUserIndex - 1 + data.length) % data.length;
-                    }
-                }
-                showStory(currentUserIndex, currentStoryIndex);
-            });
+    if (clickX > modalWidth / 2) {
+        // Click on the right side
+        currentStoryIndex = (currentStoryIndex + 1) % data[currentUserIndex].stories.length;
+        if (currentStoryIndex === 0) {
+            currentUserIndex = (currentUserIndex + 1) % data.length;
+        }
+    } else {
+        // Click on the left side
+        currentStoryIndex = (currentStoryIndex - 1 + data[currentUserIndex].stories.length) % data[currentUserIndex].stories.length;
+        if (currentStoryIndex === data[currentUserIndex].stories.length - 1) {
+            currentUserIndex = (currentUserIndex - 1 + data.length) % data.length;
+        }
+    }
 
-            // Event listener for options icon
-            optionsIcon.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent the click from closing the modal
-                optionsMenu.style.display = optionsMenu.style.display === 'block' ? 'none' : 'block';
-            });
-
-            // Close the options menu when clicking outside of it
-            document.addEventListener('click', (event) => {
-                if (!optionsMenu.contains(event.target) && event.target !== optionsIcon) {
-                    optionsMenu.style.display = 'none';
-                }
-            });
-
-            // Prevent clicks inside the options menu from closing the story modal
-            optionsMenu.addEventListener('click', (event) => {
-                event.stopPropagation();
-            });
-        })
-        .catch(error => console.error('Error fetching stories:', error));
+    // Check if the story video modal is visible
+    const storyVideoModalVideo = storyModal.querySelector('.story-video-modal video');
+    if (storyVideoModalVideo && storyVideoModalVideo.paused) {
+        storyVideoModalVideo.play();
+    } else {
+        showStory(currentUserIndex, currentStoryIndex);
+    }
 });
