@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const storyVideoModal = document.querySelector('.story-video-modal');
             const storyLocationModal = document.querySelector('.story-location-modal');
             const progressBar = document.querySelector('.progress-bar');
+            const header = document.getElementById('header');
+            const bottomNav = document.querySelector('.bottom-nav');
             let currentStoryIndex = 0;
             let currentUserIndex = 0;
             let storyTimer;
@@ -19,12 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const showStory = (userIndex, storyIndex) => {
                 const user = data[userIndex];
                 const story = user.stories[storyIndex];
-            
+
                 if (!story || !story.image) {
                     console.error('Story or story image is undefined');
                     return;
                 }
-            
+                bottomNav.style.display = 'none';
                 if (story.image.endsWith('.mp4')) {
                     storyImageModal.style.display = 'none';
                     storyVideoModal.style.display = 'block';
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     showStory(currentUserIndex, currentStoryIndex);
                 }, 5000); // Change story every 5 seconds
-            
+
                 // Check if the story is liked and update the heart icon
                 const heartIcon = document.querySelector('.comment-bar .material-icons');
                 if (heartIcon) {
@@ -61,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     heartIcon.style.color = isLiked ? 'red' : 'black';
                 }
             };
-            
+
             const updateProgressBar = (totalStories, activeIndex) => {
                 progressBar.innerHTML = '';
                 for (let i = 0; i < totalStories; i++) {
@@ -73,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     progressBar.appendChild(segment);
                 }
             };
-            
+
             const resetProgressBar = () => {
                 const activeSegment = document.querySelector('.progress-segment.active');
                 if (activeSegment) {
@@ -82,7 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     activeSegment.style.animation = 'load 5s linear forwards';
                 }
             };
-           
+
+            const disableScroll = () => {
+                document.body.style.overflow = 'hidden';
+            };
+
+            const enableScroll = () => {
+                document.body.style.overflow = 'auto';
+            };
 
             data.forEach((user, userIndex) => {
                 const storyElement = document.createElement('div');
@@ -120,22 +129,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentUserIndex = userIndex;
                     currentStoryIndex = 0;
                     storyModal.style.display = 'block';
+                    header.style.display = 'none'; // Hide the header
+                    disableScroll(); // Disable scrolling
                     showStory(currentUserIndex, currentStoryIndex);
                 });
                 storiesContainer.appendChild(storyElement);
             });
 
-            closeModal.addEventListener('click', () => {
-                storyModal.style.display = 'none';
-                clearTimeout(storyTimer);
-            });
+            console.log(bottomNav.style.display); // Log the display status of bottomNav
 
-            window.addEventListener('click', (event) => {
-                if (event.target === storyModal) {
-                    storyModal.style.display = 'none';
-                    clearTimeout(storyTimer);
-                }
-            });
+            console.log('bottomNav:', getComputedStyle(bottomNav).display, getComputedStyle(bottomNav).visibility, bottomNav.offsetWidth, bottomNav.offsetHeight);
+// Event listener for the close modal button
+closeModal.addEventListener('click', () => {
+    storyModal.style.display = 'none';
+    header.style.display = 'flex'; // Show the header
+    enableScroll(); // Enable scrolling
+    clearTimeout(storyTimer);
+    setTimeout(() => {
+        bottomNav.style.display = ''; // Reset display style to default
+        console.log('Closed modal, bottomNav display:', getComputedStyle(bottomNav).display, getComputedStyle(bottomNav).visibility, bottomNav.offsetWidth, bottomNav.offsetHeight);
+    }, 100); // Adjust the delay as needed
+});
+
+// Event listener for clicks outside the story modal
+window.addEventListener('click', (event) => {
+    if (event.target === storyModal) {
+        storyModal.style.display = 'none';
+        header.style.display = 'flex'; // Show the header
+        enableScroll(); // Enable scrolling
+        clearTimeout(storyTimer);
+        setTimeout(() => {
+            bottomNav.style.display = ''; // Reset display style to default
+            console.log('Clicked outside modal, bottomNav display:', getComputedStyle(bottomNav).display, getComputedStyle(bottomNav).visibility, bottomNav.offsetWidth, bottomNav.offsetHeight);
+        }, 100); // Adjust the delay as needed
+    }
+});
 
             // Add event listeners for clicking on the left and right sides of the modal
             storyModal.addEventListener('click', (event) => {
@@ -143,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const clickX = event.clientX;
 
                 // Check if the click target is not the heart icon, profile picture, options menu, or comment bar
-                if (event.target.closest('.material-icons.favorite_border') || event.target.closest('.profile-picture-modal') || event.target.closest('.options') || event.target.closest('.comment-bar')) {
+                if (event.target.closest('.material-icons.favorite-border') || event.target.closest('.profile-picture-modal') || event.target.closest('.options') || event.target.closest('.comment-bar')) {
                     return; // Do nothing if the click is on these elements
                 }
 
@@ -164,8 +192,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Event listener for options icon
-            optionsIcon.addEventListener('click', () => {
-                optionsMenu.classList.toggle('show');
+            optionsIcon.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent the click from closing the modal
+                optionsMenu.style.display = optionsMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close the options menu when clicking outside of it
+            document.addEventListener('click', (event) => {
+                if (!optionsMenu.contains(event.target) && event.target !== optionsIcon) {
+                    optionsMenu.style.display = 'none';
+                }
+            });
+
+            // Prevent clicks inside the options menu from closing the story modal
+            optionsMenu.addEventListener('click', (event) => {
+                event.stopPropagation();
             });
         })
         .catch(error => console.error('Error fetching stories:', error));
