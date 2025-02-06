@@ -5,15 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
             window.storyData = data; // Store data in the window object
             const storiesContainer = document.getElementById('stories');
             const storyModal = document.getElementById('storyModal');
-            const closeModal = document.querySelector('.close');
             const optionsIcon = document.querySelector('.options');
             const optionsMenu = document.querySelector('.options-menu');
             const storyImageModal = document.querySelector('.story-image-modal');
             const storyVideoModal = document.querySelector('.story-video-modal');
             const storyLocationModal = document.querySelector('.story-location-modal');
             const progressBar = document.querySelector('.progress-bar');
-            const header = document.getElementById('header');
-            const bottomNav = document.querySelector('.bottom-nav');
             let currentStoryIndex = 0;
             let currentUserIndex = 0;
             let storyTimer;
@@ -26,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Story or story image is undefined');
                     return;
                 }
-                bottomNav.style.display = 'none';
                 if (story.image.endsWith('.mp4')) {
                     storyImageModal.style.display = 'none';
                     storyVideoModal.style.display = 'block';
@@ -111,96 +107,76 @@ document.addEventListener('DOMContentLoaded', () => {
                 storyElement.appendChild(storyLines);
 
                 // Create story media
-                const story = user.stories[0];
-                if (story.image.endsWith('.mp4')) {
-                    storyElement.innerHTML += `
-                        <div class="story-location">${story.location}</div>
-                        <video class="story-media" autoplay muted loop playsinline>
-                            <source src="${story.image}" type="video/mp4">
-                        </video>
-                    `;
-
-                    // Add event listener for the video to start playing
-                    const storyVideo = storyElement.querySelector('.story-media');
-                    storyVideo.addEventListener('playing', () => {
-                        clearTimeout(storyTimer);
-                        showStory(userIndex, 0);
-                    });
-                } else {
-                    storyElement.innerHTML += `
-                        <div class="story-location">${story.location}</div>
-                        <img src="${story.image}" alt="${user.username}'s story" class="story-media" loading="lazy">
-                    `;
-                }
-
-                // Add event listener for clicking on the story
+               // ...
+// Create story media
+const story = user.stories[0];
+if (story.image.endsWith('.mp4')) {
+    storyElement.innerHTML += `
+        <div class="story-location">${story.location}</div>
+        <video class="story-media" autoplay muted loop playsinline>
+            <source src="${story.image}" type="video/mp4" loading="lazy">
+        </video>
+    `;
+} else {
+    storyElement.innerHTML += `
+        <div class="story-location">${story.location}</div>
+        <img src="${story.image}" alt="${user.username}'s story" class="story-media" loading="lazy">
+    `;
+}
+// ...
                 storyElement.addEventListener('click', () => {
-                    storyModal.style.display = 'flex';
-                    header.style.display = 'none'; // Hide the header
+                    currentUserIndex = userIndex;
+                    currentStoryIndex = 0;
+                    storyModal.style.display = 'block';
                     disableScroll(); // Disable scrolling
-                    showStory(userIndex, 0);
+                    showStory(currentUserIndex, currentStoryIndex);
                 });
-
                 storiesContainer.appendChild(storyElement);
             });
-        });
-});
 
-// Event listener for the close modal button
-closeModal.addEventListener('click', () => {
-    storyModal.style.display = 'none';
-    header.style.display = 'flex'; // Show the header
-    enableScroll(); // Enable scrolling
-    clearTimeout(storyTimer);
-    setTimeout(() => {
-        bottomNav.style.display = ''; // Reset display style to default
-        console.log('Closed modal, bottomNav display:', getComputedStyle(bottomNav).display, getComputedStyle(bottomNav).visibility, bottomNav.offsetWidth, bottomNav.offsetHeight);
-    }, 100); // Adjust the delay as needed
-});
+            // Add event listeners for clicking on the left and right sides of the modal
+            storyModal.addEventListener('click', (event) => {
+                const modalWidth = storyModal.offsetWidth;
+                const clickX = event.clientX;
 
-// Event listener for clicks outside the story modal
-window.addEventListener('click', (event) => {
-    if (event.target === storyModal) {
-        storyModal.style.display = 'none';
-        header.style.display = 'flex'; // Show the header
-        enableScroll(); // Enable scrolling
-        clearTimeout(storyTimer);
-        setTimeout(() => {
-            bottomNav.style.display = ''; // Reset display style to default
-            console.log('Clicked outside modal, bottomNav display:', getComputedStyle(bottomNav).display, getComputedStyle(bottomNav).visibility, bottomNav.offsetWidth, bottomNav.offsetHeight);
-        }, 100); // Adjust the delay as needed
-    }
-});
+                // Check if the click target is not the heart icon, profile picture, options menu, or comment bar
+                if (event.target.closest('.material-icons.favorite-border') || event.target.closest('.profile-picture-modal') || event.target.closest('.options') || event.target.closest('.comment-bar')) {
+                    return; // Do nothing if the click is on these elements
+                }
 
-// Event listener for clicking on the left and right sides of the modal
-storyModal.addEventListener('click', (event) => {
-    const modalWidth = storyModal.offsetWidth;
-    const clickX = event.clientX;
+                if (clickX > modalWidth / 2) {
+                    // Click on the right side
+                    currentStoryIndex = (currentStoryIndex + 1) % data[currentUserIndex].stories.length;
+                    if (currentStoryIndex === 0) {
+                        currentUserIndex = (currentUserIndex + 1) % data.length;
+                    }
+                } else {
+                    // Click on the left side
+                    currentStoryIndex = (currentStoryIndex - 1 + data[currentUserIndex].stories.length) % data[currentUserIndex].stories.length;
+                    if (currentStoryIndex === data[currentUserIndex].stories.length - 1) {
+                        currentUserIndex = (currentUserIndex - 1 + data.length) % data.length;
+                    }
+                }
+                showStory(currentUserIndex, currentStoryIndex);
+            });
 
-    // Check if the click target is not the heart icon, profile picture, options menu, or comment bar
-    if (event.target.closest('.material-icons.favorite-border') || event.target.closest('.profile-picture-modal') || event.target.closest('.options') || event.target.closest('.comment-bar')) {
-        return; // Do nothing if the click is on these elements
-    }
+            // Event listener for options icon
+            optionsIcon.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent the click from closing the modal
+                optionsMenu.style.display = optionsMenu.style.display === 'block' ? 'none' : 'block';
+            });
 
-    if (clickX > modalWidth / 2) {
-        // Click on the right side
-        currentStoryIndex = (currentStoryIndex + 1) % data[currentUserIndex].stories.length;
-        if (currentStoryIndex === 0) {
-            currentUserIndex = (currentUserIndex + 1) % data.length;
-        }
-    } else {
-        // Click on the left side
-        currentStoryIndex = (currentStoryIndex - 1 + data[currentUserIndex].stories.length) % data[currentUserIndex].stories.length;
-        if (currentStoryIndex === data[currentUserIndex].stories.length - 1) {
-            currentUserIndex = (currentUserIndex - 1 + data.length) % data.length;
-        }
-    }
+            // Close the options menu when clicking outside of it
+            document.addEventListener('click', (event) => {
+                if (!optionsMenu.contains(event.target) && event.target !== optionsIcon) {
+                    optionsMenu.style.display = 'none';
+                }
+            });
 
-    // Check if the story video modal is visible
-    const storyVideoModalVideo = storyModal.querySelector('.story-video-modal video');
-    if (storyVideoModalVideo && storyVideoModalVideo.paused) {
-        storyVideoModalVideo.play();
-    } else {
-        showStory(currentUserIndex, currentStoryIndex);
-    }
+            // Prevent clicks inside the options menu from closing the story modal
+            optionsMenu.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+        })
+        .catch(error => console.error('Error fetching stories:', error));
 });
