@@ -1,27 +1,22 @@
-const redis = require("redis");
-const client = redis.createClient();
-
 document.addEventListener('DOMContentLoaded', () => {
   const cacheKey = 'stories';
 
-  client.get(cacheKey, (err, data) => {
-    if (err) throw err;
+  const cachedData = localStorage.getItem(cacheKey);
 
-    if (data) {
-      const storyData = JSON.parse(data);
-      window.storyData = storyData;
-      renderStories(storyData);
-    } else {
-      fetch('story.json')
-        .then(response => response.json())
-        .then(data => {
-          window.storyData = data; // Store data in the window object
-          client.setex(cacheKey, 3600, JSON.stringify(data));
-          renderStories(data);
-        })
-        .catch(error => console.error('Error fetching stories:', error));
-    }
-  });
+  if (cachedData) {
+    const storyData = JSON.parse(cachedData);
+    window.storyData = storyData;
+    renderStories(storyData);
+  } else {
+    fetch('story.json')
+      .then(response => response.json())
+      .then(data => {
+        window.storyData = data;
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+        renderStories(data);
+      })
+      .catch(error => console.error('Error fetching stories:', error));
+  }
 });
 
 const renderStories = (data) => {
