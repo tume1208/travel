@@ -1,44 +1,26 @@
-const redis = require("redis");
-const client = redis.createClient();
-
-// Your existing lazyLoadElements function
-const lazyLoadElements = (elements) => {
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const element = entry.target;
-        if (element.dataset.src) {
-          element.src = element.dataset.src;
-          element.removeAttribute('data-src');
-        }
-        observer.unobserve(element);
-      }
-    });
-  }, { root: document.getElementById('postSection'), rootMargin: '0px', threshold: 0.1 });
-  elements.forEach(element => observer.observe(element));
-};
-
-// Fetch posts and interactions with caching
 document.addEventListener('DOMContentLoaded', () => {
   const cacheKey = 'posts_and_interactions';
 
-  client.get(cacheKey, (err, data) => {
-    if (err) throw err;
+  const cachedData = localStorage.getItem(cacheKey);
 
-    if (data) {
-      const { posts, postInteractions } = JSON.parse(data);
+  if (cachedData) {
+    const { posts, postInteractions } = JSON.parse(cachedData);
+    renderPosts(posts, postInteractions);
+  } else {
+    Promise.all([
+      fetch('posts.json').then(response => response.json()),
+      fetch('post_interactions.json').then(response => response.json())
+    ]).then(([posts, postInteractions]) => {
+      localStorage.setItem(cacheKey, JSON.stringify({ posts, postInteractions }));
       renderPosts(posts, postInteractions);
-    } else {
-      Promise.all([
-        fetch('posts.json').then(response => response.json()),
-        fetch('post_interactions.json').then(response => response.json())
-      ]).then(([posts, postInteractions]) => {
-        client.setex(cacheKey, 3600, JSON.stringify({ posts, postInteractions }));
-        renderPosts(posts, postInteractions);
-      }).catch(error => console.error('Error fetching posts:', error));
-    }
-  });
+    }).catch(error => console.error('Error fetching posts:', error));
+  }
 });
+
+const renderPosts = (posts, postInteractions) => {
+  // Your existing rendering logic here
+};
+
 
 // Render posts function
 const renderPosts = (posts, postInteractions) => {
