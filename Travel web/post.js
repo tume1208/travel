@@ -1,40 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const cacheKey = 'stories';
+  const cacheKey = 'posts_and_interactions';
 
   const cachedData = localStorage.getItem(cacheKey);
 
   if (cachedData) {
-    const storyData = JSON.parse(cachedData);
-    window.storyData = storyData;
-    renderStories(storyData);
+    const { posts, postInteractions } = JSON.parse(cachedData);
+    renderPosts(posts, postInteractions);
   } else {
-    fetch('story.json')
-      .then(response => response.json())
-      .then(data => {
-        window.storyData = data;
-        localStorage.setItem(cacheKey, JSON.stringify(data));
-        renderStories(data);
-      })
-      .catch(error => console.error('Error fetching stories:', error));
+    Promise.all([
+      fetch('posts.json').then(response => response.json()),
+      fetch('post_interactions.json').then(response => response.json())
+    ]).then(([posts, postInteractions]) => {
+      localStorage.setItem(cacheKey, JSON.stringify({ posts, postInteractions }));
+      renderPosts(posts, postInteractions);
+    }).catch(error => console.error('Error fetching posts:', error));
   }
 });
 
-const renderStories = (data) => {
-  // Your existing rendering logic here
-};
-
-
-
-// Render posts function
 const renderPosts = (posts, postInteractions) => {
   const postSection = document.getElementById('postSection');
-  
+  postSection.innerHTML = ''; // Clear existing content
+
   posts.forEach(post => {
     const postElement = document.createElement('div');
     postElement.classList.add('post');
 
     const interaction = postInteractions.find(i => i.post_id === post.post_id);
-    
+
     const profilePicture = document.createElement('img');
     profilePicture.dataset.src = post.profilePicture;
     profilePicture.alt = `${post.username}'s profile picture`;
