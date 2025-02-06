@@ -6,16 +6,38 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(([posts, postInteractions]) => {
         const postSection = document.getElementById('postSection');
 
+        // Lazy loading setup
+        const lazyLoadElements = (elements) => {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        if (element.dataset.src) {
+                            element.src = element.dataset.src;
+                            element.removeAttribute('data-src');
+                        }
+                        observer.unobserve(element);
+                    }
+                });
+            }, {
+                root: postSection, // Ensure the root is set to the post section
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+
+            elements.forEach(element => observer.observe(element));
+        };
+
         posts.forEach(post => {
-            const postElement = document.createElement('div'); // Add this line to define postElement
+            const postElement = document.createElement('div');
             postElement.classList.add('post');
 
             const interaction = postInteractions.find(i => i.post_id === post.post_id);
 
             const profilePicture = document.createElement('img');
-            profilePicture.src = post.profilePicture;
+            profilePicture.dataset.src = post.profilePicture;
             profilePicture.alt = `${post.username}'s profile picture`;
-            profilePicture.classList.add('profile-picture');
+            profilePicture.classList.add('profile-picture', 'lazy');
 
             const username = document.createElement('span');
             username.textContent = post.username;
@@ -45,17 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
             post.media.forEach(media => {
                 if (media.endsWith('.mp4')) {
                     const video = document.createElement('video');
-                    video.src = media;
+                    video.dataset.src = media;
                     video.autoplay = true;
                     video.muted = true;
-                
-                    // Apply class to main video posts
-                    video.classList.add('post-video');
-                    
-                    // Remove default controls
+                    video.classList.add('post-video', 'lazy');
                     video.controls = false;
-                
-                    // Unmute when the video is clicked
+
                     video.addEventListener('click', () => {
                         if (video.paused) {
                             video.play();
@@ -64,17 +81,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         video.muted = !video.muted;
                     });
-                
+
                     video.addEventListener('error', () => console.error('Failed to load video:', media));
                     slider.appendChild(video);
                 } else {
                     const img = document.createElement('img');
-                    img.src = media;
+                    img.dataset.src = media;
+                    img.classList.add('lazy');
                     img.addEventListener('error', () => console.error('Failed to load image:', media));
                     slider.appendChild(img);
                 }
             });
-            
+
             sliderContainer.appendChild(slider);
 
             const icons = document.createElement('div');
@@ -109,8 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             leftIcons.appendChild(shareCount);
 
             const saveIcon = document.createElement('i');
-            saveIcon.classList.add('fa-regular', 'fa-bookmark', 'post-icon');
-            saveIcon.classList.add('post-right-icon');
+            saveIcon.classList.add('fa-regular', 'fa-bookmark', 'post-icon', 'post-right-icon');
             const bookmarkCount = document.createElement('span');
             bookmarkCount.textContent = interaction.bookmarks_count;
             bookmarkCount.classList.add('interaction-count');
@@ -123,20 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 heartIcon.classList.toggle('fa-solid');
                 heartIcon.classList.toggle('fa-regular');
             });
-            
-            commentIcon.addEventListener('click', () => {
-                // Open a comment input field (if needed) without incrementing the count
-            });
-            
-            shareIcon.addEventListener('click', () => {
-                // Perform share action (if needed) without incrementing the count
-            });
-            
+
             saveIcon.addEventListener('click', () => {
                 saveIcon.classList.toggle('fa-solid');
                 saveIcon.classList.toggle('fa-regular');
             });
-            
 
             postElement.appendChild(header);
             postElement.appendChild(sliderContainer);
@@ -145,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             postSection.appendChild(postElement);
 
-            // Add swipe functionality
             let currentIndex = 0;
             const totalImages = slider.children.length;
             let startX, currentX, isDragging = false;
@@ -178,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentX = e.touches[0].pageX;
                 const diffX = startX - currentX;
                 if ((currentIndex === 0 && diffX < 0) || (currentIndex === totalImages - 1 && diffX > 0)) {
-                    return; // Prevent swiping beyond the first and last images
+                    return;
                 }
                 slider.style.transform = `translateX(calc(-${currentIndex * 100}% - ${diffX}px))`;
             });
@@ -196,6 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateSliderPosition();
                 }
             });
+
+            // Lazy load all elements including profile pictures and media
+            lazyLoadElements(postElement.querySelectorAll('img.lazy, video.lazy'));
         });
     })
     .catch(error => console.error('Error fetching posts:', error));
