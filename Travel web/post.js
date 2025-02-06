@@ -1,25 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const cacheKey = 'posts_and_interactions';
+  const cacheKey = 'stories';
 
   const cachedData = localStorage.getItem(cacheKey);
 
   if (cachedData) {
-    const { posts, postInteractions } = JSON.parse(cachedData);
-    renderPosts(posts, postInteractions);
+    const storyData = JSON.parse(cachedData);
+    window.storyData = storyData;
+    renderStories(storyData);
   } else {
-    Promise.all([
-      fetch('posts.json').then(response => response.json()),
-      fetch('post_interactions.json').then(response => response.json())
-    ]).then(([posts, postInteractions]) => {
-      localStorage.setItem(cacheKey, JSON.stringify({ posts, postInteractions }));
-      renderPosts(posts, postInteractions);
-    }).catch(error => console.error('Error fetching posts:', error));
+    fetch('story.json')
+      .then(response => response.json())
+      .then(data => {
+        window.storyData = data;
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+        renderStories(data);
+      })
+      .catch(error => console.error('Error fetching stories:', error));
   }
 });
 
-const renderPosts = (posts, postInteractions) => {
+const renderStories = (data) => {
   // Your existing rendering logic here
 };
+
 
 
 // Render posts function
