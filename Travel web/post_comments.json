@@ -1,0 +1,18 @@
+[
+    {
+        "comment_id": 1,
+        "post_id": 1,
+        "user_id": 1,
+        "username": "user1",
+        "comment": "This is an amazing post!",
+        "profilePicture": "image/et.jpg"
+    },
+    {
+        "comment_id": 2,
+        "post_id": 1,
+        "user_id": 2,
+        "username": "user2",
+        "comment": "Love this!",
+        "profilePicture": "image/et1.jpg"
+    }
+]

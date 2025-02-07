@@ -1,9 +1,9 @@
 [
   {
     "post_id": 1,
-    "likes_count": 12,
+    "likes_count": 121,
     "comments_count": 3,
-    "shares_count": 0,
+    "shares_count": 8,
     "bookmarks_count": 0
   },
   {
@@ -16,14 +16,14 @@
   {
     "post_id": 3,
     "likes_count": 0,
-    "comments_count": 0,
+    "comments_count": 120,
     "shares_count": 0,
     "bookmarks_count": 0
   },
   {
     "post_id": 4,
-    "likes_count": 0,
-    "comments_count": 0,
+    "likes_count": 150,
+    "comments_count": 1500,
     "shares_count": 0,
     "bookmarks_count": 0
   },
