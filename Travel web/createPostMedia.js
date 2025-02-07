@@ -36,5 +36,58 @@ export const createPostMedia = (post) => {
     });
 
     sliderContainer.appendChild(slider);
+
+    // Swiping functionality
+    let currentIndex = 0;
+    const totalImages = slider.children.length;
+    let startX, currentX, isDragging = false;
+
+    function updateSliderPosition() {
+        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function goToNextImage() {
+        if (currentIndex < totalImages - 1) {
+            currentIndex++;
+            updateSliderPosition();
+        }
+    }
+
+    function goToPrevImage() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateSliderPosition();
+        }
+    }
+
+    sliderContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX;
+        isDragging = true;
+    });
+
+    sliderContainer.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].pageX;
+        const diffX = startX - currentX;
+        if ((currentIndex === 0 && diffX < 0) || (currentIndex === totalImages - 1 && diffX > 0)) {
+            return;
+        }
+        slider.style.transform = `translateX(calc(-${currentIndex * 100}% - ${diffX}px))`;
+    });
+
+    sliderContainer.addEventListener('touchend', (e) => {
+        isDragging = false;
+        const endX = e.changedTouches[0].pageX;
+        const diffX = startX - endX;
+
+        if (diffX > 50 && currentIndex < totalImages - 1) {
+            goToNextImage();
+        } else if (diffX < -50 && currentIndex > 0) {
+            goToPrevImage();
+        } else {
+            updateSliderPosition();
+        }
+    });
+
     return sliderContainer;
 };
