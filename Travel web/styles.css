@@ -373,6 +373,7 @@ header {
     padding: 0;
     margin: 0;
     border-radius: 0;
+    position: relative;
 }
 
 .profile-picture {
@@ -394,7 +395,7 @@ header {
 
 .slider-container {
     width: 100%;
-    max-width: 540px;
+    max-width: 840px;
     overflow: hidden;
     border: 1px solid #dbdbdb;
     background-color: #fff;
@@ -476,4 +477,101 @@ header {
 
 .post-icon {
     cursor: pointer;
+}
+#postSection, #recommendationsSection {
+        margin-bottom: 40px;}
+        #recommendationsSection h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        
+        #recommendationsSection .post {
+            border: 1px dashed #ddd;
+        }/* styles.css */
+
+
+
+.comment-section {
+    display: none;
+    height: 66vh; /* 2/3 of the screen height */
+    width: 90%; /* Width of 90% */
+    overflow-y: auto; /* Make it scrollable */
+    border-radius: 10px; /* Rounded corners */
+    border-top: 1px solid #ccc; /* Add a border for separation */
+    padding: 10px;
+    position: fixed; /* Position it absolutely within the post */
+    bottom: 0; /* Start from the bottom of the post */
+    left: 50%; /* Center the comment section */
+    transform: translateX(-50%); /* Center the comment section */
+    background-color: #fff; /* White background to overlay on the post */
+    z-index: 10; /* Ensure it overlays the post */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow for a better look */
+    transition: opacity 0.3s ease-out, max-height 0.3s ease-out; /* Smooth transitions */
+    opacity: 0;
+    max-height: 0; /* Initial height set to zero */
+}
+
+.comment-section.visible {
+    display: block;
+    opacity: 1;
+    max-height: 66vh; /* Expand to 2/3 of the screen height */
+}
+
+.comment-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-align: center; /* Center the header text */
+}
+
+.comment-typing {
+    display: flex;
+    position: fixed; /* Fix it at the bottom */
+    bottom: 80px; /* Adjust position */
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Add a shadow for a better look */
+    border-radius: 10px;
+}
+
+.comment-typing input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.comment-typing button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.comment-typing button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+    display: none;
+}
+
+.overlay.visible {
+    display: block;
+    overflow: hidden;
 }
