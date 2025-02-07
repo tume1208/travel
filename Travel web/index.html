@@ -59,8 +59,12 @@
             </div>
         </div>
         <div id="postSection"></div>
-
-
+        <div id="recommendationsSection">
+            <h2>Recommended Posts</h2>
+            <!-- Recommended posts will be dynamically inserted here -->
+        </div>
+        
+            <input type="file" id="fileInput" accept="image/*, video/*">
     </main>
     <footer>
      <nav class="bottom-nav">
@@ -89,11 +93,11 @@
             </ul>
         </nav>   
     </footer>
-    <script src="script.js"></script>
+    <script src="script.js" async></script>
     <script src="storyInteraction.js" defer></script>
-    <script src="post.js"></script>
     <script src="scrolllogo.js" defer></script>
     <script src="showbottom.js" defer></script>
-    <script src="cache.js" defer></script>
+    <script src="recommendations.js" defer></script>
+    <script type="module" src="mainpost.js"></script>
 </body>
 </html>
