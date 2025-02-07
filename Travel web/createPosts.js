@@ -1,4 +1,3 @@
-// createPosts.js
 import { postLazyLoad } from './postLazyLoad.js';
 import { createPostComments } from './createPostComments.js';
 import { setupPostInteractions } from './postInteractions.js';
